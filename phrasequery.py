@@ -4,18 +4,25 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 import pandas as pd
-import numpy as np
+import time
 
-df=pd.read_csv('train.csv')
+nltk.download('stopwords')
+nltk.download('punkt')
+
+df=pd.read_csv('legal_text_classification.csv')
 stop_words=set(stopwords.words('english'))
-df['texttoken']=df['text'].apply(word_tokenize)
+df=df.dropna()
+df['texttoken']=df['case_text'].apply(word_tokenize)
 df['texttoken']=df['texttoken'].apply(lambda words:[word.lower() for word in words if word.isalpha()])
 df['stop_remd']=df['texttoken'].apply(lambda x:[item for item in x if item not in stop_words])
 
 ps=PorterStemmer()
 df['stemmed']=df['stop_remd'].apply(lambda x:[ps.stem(item) for item in x])
+
+
 idx_dict={}
-for postext,text in enumerate(df['stemmed'].head(20)):
+st_time=time.time()
+for postext,text in enumerate(df['stemmed']):
     for pos,term in enumerate(text):
         if term not in idx_dict.keys():
             idx_dict[term]=[0,{}]
@@ -23,11 +30,13 @@ for postext,text in enumerate(df['stemmed'].head(20)):
         if postext not in idx_dict[term][1].keys():
             idx_dict[term][1][postext]=[]
         idx_dict[term][1][postext].append(pos)
+end_time=time.time()-st_time
+print("Time taken to build inverted index: ",end_time)
 print("Term [Frequency,Entry number:[Positions in that entry]]")
-for i in idx_dict:
+for i in list(idx_dict)[:20]:
     print(i,idx_dict[i])
 
-def search(t1,t2,idx_dict):
+def search(t1,t2,prox,idx_dict):
     res=[]
     if t1 not in idx_dict.keys() or t2 not in idx_dict.keys():
         print("Query does not exist")
@@ -39,22 +48,25 @@ def search(t1,t2,idx_dict):
             l1=idx1[i]
             l2=idx2[i]
             for j in l1:
-                if j+1 or j-1 in l2:
+                if (any(x in l2 for x in range(j-prox,j+prox+1))):
                     if i not in res:
                         res.append(i)
     if len(res)==0:
         print('Query does not exist')
     return res
 
-
-inp=input("Enter query separated by spaces:").split()
+inp=input("Enter query with query proximity separated by spaces:").split()
+prox=1
+if(len(inp)==3):
+  prox=int(inp[1][1:])
+  inp.pop(1)
 inp=[ps.stem(i) for i in inp]
-res=search(inp[0],inp[1],idx_dict)
+st_time=time.time()
+res=search(inp[0],inp[1],prox,idx_dict)
+end_time=time.time()-st_time
+print("Time taken to search for phrase: ",end_time)
 print(res)
 if len(res)!=0:
     for i in res:
-        print(i,"\t",df['text'].iloc[i])
-
-
-
+        print(i,"\t",df['case_text'].iloc[i])
 
