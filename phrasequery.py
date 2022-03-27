@@ -6,8 +6,8 @@ from nltk.stem import PorterStemmer
 import pandas as pd
 import time
 
-nltk.download('stopwords')
-nltk.download('punkt')
+# nltk.download('stopwords')
+# nltk.download('punkt')
 
 df=pd.read_csv('legal_text_classification.csv')
 stop_words=set(stopwords.words('english'))
@@ -33,7 +33,7 @@ for postext,text in enumerate(df['stemmed']):
 end_time=time.time()-st_time
 print("Time taken to build inverted index: ",end_time)
 print("Term [Frequency,Entry number:[Positions in that entry]]")
-for i in list(idx_dict)[:20]:
+for i in list(idx_dict)[:10]:
     print(i,idx_dict[i])
 
 def search(t1,t2,prox,idx_dict):
