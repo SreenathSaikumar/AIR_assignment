@@ -1,7 +1,8 @@
 # AIR Assignment UE19CS332
 ## The Team
 Sreenath Saikumar - PES2UG19CS406<br>
-Srivatsan Narendiran - PES2UG19CS408
+Srivatsan Narendiran - PES2UG19CS408<br>
+Sreekanth Maneesh - PES2UG19CS405
 
 ## Datasets Used
 [Legal Citation Text Classification](https://www.kaggle.com/datasets/shivamb/legal-citation-text-classification)<br>
