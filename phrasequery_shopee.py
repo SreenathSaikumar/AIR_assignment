@@ -6,8 +6,6 @@ from nltk.stem import PorterStemmer
 import pandas as pd
 import time
 
-# nltk.download('stopwords')
-# nltk.download('punkt')
 
 df=pd.read_csv('shopee_reviews.csv',usecols=["text"])
 stop_words=set(stopwords.words('english'))

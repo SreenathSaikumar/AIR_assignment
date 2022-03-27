@@ -46,6 +46,8 @@ for postext,text in enumerate(df['stop_remd']):
         if term not in post_list.keys():
             post_list[term]=[]
         post_list[term].append(postext)
+for i in list(post_list)[:20]:
+    print(i,post_list[i])
 end_time=time.time()-st_time
 f=open("benchmark.txt",'a')
 f.write("=====Tweet Emotions Dataset=====\n")

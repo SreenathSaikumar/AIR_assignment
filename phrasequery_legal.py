@@ -6,9 +6,6 @@ from nltk.stem import PorterStemmer
 import pandas as pd
 import time
 
-# nltk.download('stopwords')
-# nltk.download('punkt')
-
 df=pd.read_csv('legal_text_classification.csv')
 stop_words=set(stopwords.words('english'))
 df=df.dropna()
