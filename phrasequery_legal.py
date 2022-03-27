@@ -31,7 +31,9 @@ for postext,text in enumerate(df['stemmed']):
             idx_dict[term][1][postext]=[]
         idx_dict[term][1][postext].append(pos)
 end_time=time.time()-st_time
-print("Time taken to build inverted index: ",end_time)
+f=open("benchmark.txt",'a')
+f.write("=====Legal Text Classification Dataset=====\n")
+f.write("Time taken to build inverted index: "+str(end_time)+"\n")
 print("Term [Frequency,Entry number:[Positions in that entry]]")
 for i in list(idx_dict)[:10]:
     print(i,idx_dict[i])
@@ -64,7 +66,8 @@ inp=[ps.stem(i) for i in inp]
 st_time=time.time()
 res=search(inp[0],inp[1],prox,idx_dict)
 end_time=time.time()-st_time
-print("Time taken to search for phrase: ",end_time)
+f.write("Time taken to search for phrase: "+str(end_time)+"\n")
+f.close()
 print(res)
 if len(res)!=0:
     for i in res:

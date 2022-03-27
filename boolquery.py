@@ -47,7 +47,9 @@ for postext,text in enumerate(df['stop_remd']):
             post_list[term]=[]
         post_list[term].append(postext)
 end_time=time.time()-st_time
-print("Time taken to build inverted index: ",end_time)
+f=open("benchmark.txt",'a')
+f.write("=====Tweet Emotions Dataset=====\n")
+f.write("Time taken to build inverted index: "+str(end_time)+"\n")
 
 def querysearch(inp,post_list):
     if len(inp)==3:
@@ -84,4 +86,5 @@ inp=input("Enter query:").split()
 st_time=time.time()
 querysearch(inp,post_list)
 end_time=time.time()-st_time
-print("Time taken to search: ",end_time)
+f.write("Time taken to search: "+str(end_time)+"\n")
+f.close()
